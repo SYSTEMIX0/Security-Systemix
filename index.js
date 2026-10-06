@@ -14,7 +14,7 @@ const {
   SlashCommandBuilder: S, PermissionFlagsBits: P, AuditLogEvent: A, ChannelType: T,
 } = discord;
 
-const PUBLIC = path.join(__dirname, '..', 'public');
+const PUBLIC = __dirname;
 const read = (f) => fs.readFileSync(path.join(PUBLIC, f), 'utf8');
 const ctx = {}; // سياق مشترك يُمرَّر لوحدات الميزات في src/features
 
