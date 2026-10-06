@@ -1,0 +1,22 @@
+# للتجربة فقط! الخطة المجانية: تنام الخدمة بعد 15 دقيقة بدون طلبات (البوت يطلع أوفلاين)،
+# وما فيها قرص دائم (الإعدادات والاشتراكات تضيع عند كل نشر). لا تستخدمها للمتجر.
+# للاستخدام: انسخ الملف إلى جذر المشروع باسم render.yaml
+services:
+  - type: web
+    name: systemix
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: TOKEN
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_SECRET
+        sync: false
+      - key: OWNER_ID
+        sync: false

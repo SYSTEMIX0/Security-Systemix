@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Systemix | لوحة المالك</title><link rel="icon" href="/logo.webp">
+<style>:root{--card:#120a1f;--line:#2a1646;--p:#8b2fe8;--p2:#b46bff;--mu:#a592c4}*{box-sizing:border-box;margin:0;font-family:Tahoma,sans-serif}
+body{background:radial-gradient(900px 500px at 85% -10%,#3b0f73aa,transparent),radial-gradient(700px 500px at 0% 110%,#5a14a855,transparent),#07040d;color:#f1e9ff;min-height:100vh;padding:20px;max-width:1100px;margin:auto}
+header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}header img{width:48px}header h2{flex:1}
+button{cursor:pointer;border:0;border-radius:10px;padding:8px 14px;background:var(--p);color:#fff;font-size:13px}button:hover{background:var(--p2)}button.g{background:#1e1233;border:1px solid var(--line)}button.d{background:#ff4d6d}
+input,select,textarea{width:100%;background:#0c0716;border:1px solid var(--line);color:#f1e9ff;border-radius:10px;padding:9px;font-size:13px}textarea{min-height:70px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.n{font-size:26px;font-weight:700;color:var(--p2)}.mu{color:var(--mu);font-size:12px}.ds{color:var(--mu);font-size:12px;margin:2px 0 8px}label{display:block;color:var(--mu);font-size:13px;margin:10px 0 4px}
+.srv{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}.srv img{width:48px;height:48px;border-radius:50%}.srv .i{flex:1;min-width:220px}.b{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;color:#fff;margin-inline-start:6px}
+.act{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.tag{display:inline-flex;gap:6px;background:#241338;border:1px solid var(--line);padding:5px 10px;border-radius:16px;margin:3px;font-size:12px}
+#toast{position:fixed;bottom:20px;left:20px;background:var(--p);padding:12px 18px;border-radius:12px;display:none}.f button.on{background:var(--p)}</style></head><body>
+<header><img src="/logo.webp"><div style="flex:1"><h2>👑 لوحة المالك</h2><div class="mu">تحكم في كل السيرفرات اللي فيها البوت: الاشتراكات، الإيقاف، التمديد، والإعدادات العامة.</div></div><a href="/servers"><button class="g">سيرفراتي</button></a> <a href="/logout"><button class="g">خروج</button></a></header>
+<div class="grid" id="stats"></div>
+<div class="card"><h3>🌐 السيرفرات</h3><div class="ds">كل سيرفر فيه البوت. السيرفر المتوقف أو المنتهي يبقى فيه البوت لكنه ما يشتغل، ويُرسل لهم رسالة للتواصل معك.</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><input id="q" placeholder="بحث بالاسم أو الـ ID أو الملاحظة" style="flex:1;min-width:200px"><span class="f" id="flt"></span></div><div id="list"></div></div>
+<div class="card"><h3>⚙️ إعدادات الاشتراكات</h3><div class="ds">إعدادات عامة لكل السيرفرات (سيرفراتك أنت مجانية دائماً).</div>
+<div class="two"><div><label>تفعيل نظام الاشتراكات</label><div class="ds">إذا أطفيته كل السيرفرات تشتغل بدون قيود.</div><select id="lcOn"><option value="1">مفعّل</option><option value="0">متوقف</option></select></div>
+<div><label>السيرفر الجديد يبدأ</label><div class="ds">متوقف حتى تفعّله أنت، أو تجربة مجانية.</div><select id="lcNew"><option value="suspended">متوقف حتى التفعيل</option><option value="trial">تجربة مجانية</option></select></div>
+<div><label>أيام التجربة المجانية</label><div class="ds">تُستخدم فقط إذا اخترت "تجربة مجانية".</div><input id="lcTrial" type="number" min="0" max="365"></div>
+<div><label>تنبيه قبل الانتهاء (أيام)</label><div class="ds">يرسل البوت تذكير لصاحب السيرفر قبل انتهاء اشتراكه (0 = بدون).</div><input id="lcNotify" type="number" min="0" max="30"></div>
+<div><label>مغادرة تلقائية بعد الإيقاف (أيام)</label><div class="ds">يطلع البوت من السيرفر المتوقف بعد هذه المدة (0 = يبقى دائماً).</div><input id="lcLeave" type="number" min="0" max="365"></div>
+<div><label>طريقة التواصل معك</label><div class="ds">تظهر لهم في رسالة الإيقاف (مثل: يوزرك أو رابط حسابك).</div><input id="lcContact" placeholder="@username"></div></div>
+<label>رسالة الإيقاف</label><div class="ds">النص اللي يظهر في السيرفر لما يتوقف اشتراكه.</div><textarea id="lcMsg" placeholder="انتهى اشتراك البوت، للتجديد تواصل معي"></textarea><div style="margin-top:10px"><button id="lcSave">حفظ الإعدادات</button></div></div>
+<div class="card"><h3>🔗 رابط دعوة البوت</h3><div class="ds">الرابط الوحيد لإضافة البوت لأي سيرفر. أعطه للمشتري فقط، وكل سيرفر جديد يوصلك تنبيه به.</div><div class="two" style="grid-template-columns:1fr auto"><input id="inv" readonly onclick="this.select()"><button class="g" id="cp">نسخ</button></div></div>
+<div class="card"><h3>📢 رسالة جماعية</h3><div class="ds">ترسل إعلان لسيرفرات البوت (قناة اللوج أو أول قناة متاحة) + رسالة خاصة لصاحب السيرفر.</div>
+<select id="bcS"><option value="all">كل السيرفرات</option><option value="active">النشطة فقط</option><option value="stopped">المتوقفة والمنتهية</option></select><label>النص</label><textarea id="bcT"></textarea><div style="margin-top:10px"><button id="bcSend">إرسال</button></div></div>
+<div class="card"><h3>🚫 قائمة السيرفرات المحظورة</h3><div class="ds">أي سيرفر هنا يطلع منه البوت فوراً ولا يقدر يدخله مرة ثانية.</div><div class="two" style="grid-template-columns:1fr auto"><input id="blId" placeholder="ID السيرفر"><button id="blAdd">حظر</button></div><div id="bl" style="margin-top:8px"></div></div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api=async(p,b)=>{try{const r=await fetch(p,{method:b?'POST':'GET',headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return await r.json()}catch(e){return{}}};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2200)};
+const BD={active:['نشط','#2ecc71'],suspended:['متوقف','#ff4d6d'],expired:['منتهي','#f39c12'],free:['مجاني (سيرفرك)','#8b2fe8']};
+let D,F='all',Q='';
+const fmt=t=>t?new Date(t).toLocaleDateString('ar-SA'):'بدون انتهاء';
+function card(x){const b=BD[x.status],left=x.until?Math.ceil((x.until-Date.now())/864e5):null;
+return `<div class="card"><div class="srv"><img src="${x.icon||'/logo.webp'}"><div class="i"><b>${esc(x.name)}</b><span class="b" style="background:${b[1]}">${b[0]}</span>
+<div class="mu">ID: ${x.id} • ${x.members} عضو • مالك السيرفر: ${x.ownerId}</div>
+<div class="mu">الاشتراك: ${esc(x.plan||'—')} • ينتهي: ${fmt(x.until)}${left!==null&&x.status==='active'?` (باقي ${left} يوم)`:''}</div>
+<div class="mu">${(x.hist||[]).map(h=>esc(h.a)+' '+fmt(h.t)).join(' ← ')}</div></div></div>
+<div class="two"><input class="plan" data-id="${x.id}" placeholder="اسم الباقة" value="${esc(x.plan||'')}"><input class="note" data-id="${x.id}" placeholder="ملاحظة (اسم المشتري، رقم...)" value="${esc(x.note||'')}"></div>
+<div class="act"><button data-a="extend" data-d="30" data-id="${x.id}" title="يمدد الاشتراك 30 يوم من تاريخ الانتهاء">+30 يوم</button><button data-a="extend" data-d="90" data-id="${x.id}">+90 يوم</button><button data-a="extend" data-d="365" data-id="${x.id}">+سنة</button>
+<button class="g" data-a="custom" data-id="${x.id}" title="تحدد عدد الأيام">+ مخصص</button><button class="g" data-a="activate" data-d="0" data-id="${x.id}" title="يفعّل بدون تاريخ انتهاء">تفعيل دائم</button>
+<button class="d" data-a="suspend" data-id="${x.id}" title="يوقف عمل البوت في السيرفر مع بقائه فيه">إيقاف</button><button class="g" data-a="open" data-id="${x.id}" title="يفتح لوحة تحكم هذا السيرفر">فتح اللوحة</button><button class="d" data-a="leave" data-id="${x.id}" title="يخرج البوت من السيرفر">مغادرة</button></div></div>`}
+function draw(){const R=D.rows,n=s=>R.filter(x=>x.status===s).length,soon=R.filter(x=>x.status==='active'&&x.until&&x.until-Date.now()<7*864e5).length;
+$('#stats').innerHTML=[['إجمالي السيرفرات',R.length],['نشطة',n('active')+n('free')],['متوقفة',n('suspended')],['منتهية',n('expired')],['تنتهي خلال 7 أيام',soon],['إجمالي الأعضاء',R.reduce((a,x)=>a+x.members,0)]].map(([t,v])=>`<div class="card" style="margin:0"><div class="mu">${t}</div><div class="n">${v}</div></div>`).join('');
+$('#flt').innerHTML=[['all','الكل'],['active','نشط'],['suspended','متوقف'],['expired','منتهي']].map(([k,t])=>`<button class="g ${F===k?'on':''}" data-f="${k}">${t}</button>`).join(' ');
+$('#list').innerHTML=R.filter(x=>(F==='all'||x.status===F)&&(!Q||(x.name+x.id+(x.note||'')).toLowerCase().includes(Q))).map(card).join('')||'<p class="mu">لا نتائج</p>';
+$('#bl').innerHTML=D.bl.map(id=>`<span class="tag">${esc(id)} <b style="cursor:pointer;color:#ff4d6d" data-bl="${id}">✕</b></span>`).join('')||'<span class="mu">فارغة</span>'}
+async function load(first){D=await api('/api/owner/state');if(D.error){document.body.innerHTML='<p style="padding:60px;text-align:center">هذه الصفحة للمالك فقط</p>';return}
+if(first){const L=D.lic;$('#lcOn').value=L.on?'1':'0';$('#lcNew').value=L.newServers;$('#lcTrial').value=L.trialDays;$('#lcNotify').value=L.notifyDays;$('#lcLeave').value=L.leaveDays;$('#lcContact').value=L.contact||'';$('#lcMsg').value=L.msg||'';$('#inv').value=D.invite}draw()}
+document.addEventListener('click',async e=>{const t=e.target,a=t.dataset.a,id=t.dataset.id;
+if(t.dataset.f){F=t.dataset.f;draw();return}
+if(t.dataset.bl){await api('/api/owner/blacklist',{id:t.dataset.bl,add:false});load();return}
+if(!a)return;
+if(a==='open'){location.href='/select/'+id;return}
+if(a==='leave'){if(confirm('إخراج البوت من هذا السيرفر؟')){const r=await api('/api/owner/leave',{id});toast(r.ok?'✅ تم':'فشل');load()}return}
+if(a==='suspend'&&!confirm('إيقاف البوت في هذا السيرفر؟ (يبقى فيه لكنه ما يشتغل)'))return;
+let d=+t.dataset.d||0;if(a==='custom'){d=+prompt('كم يوم؟','30');if(!d)return}
+const r=await api('/api/owner/sub',{id,action:a==='custom'?'extend':a,days:d});toast(r.ok?'✅ تم وأُبلغ السيرفر':r.msg||'فشل');load()});
+document.addEventListener('change',async e=>{const t=e.target;if(t.classList.contains('note')||t.classList.contains('plan')){const id=t.dataset.id,c=t.closest('.card');const r=await api('/api/owner/sub',{id,action:'note',note:c.querySelector('.note').value,plan:c.querySelector('.plan').value});toast(r.ok?'✅ حُفظت':'فشل')}});
+$('#q').oninput=e=>{Q=e.target.value.toLowerCase();draw()};
+$('#cp').onclick=()=>{$('#inv').select();document.execCommand('copy');toast('✅ نُسخ الرابط')};
+$('#lcSave').onclick=async()=>{const r=await api('/api/owner/settings',{on:$('#lcOn').value==='1',newServers:$('#lcNew').value,trialDays:+$('#lcTrial').value,notifyDays:+$('#lcNotify').value,leaveDays:+$('#lcLeave').value,contact:$('#lcContact').value,msg:$('#lcMsg').value});toast(r.ok?'✅ حُفظت الإعدادات':'فشل')};
+$('#bcSend').onclick=async()=>{if(!$('#bcT').value.trim())return toast('اكتب النص');if(!confirm('إرسال الرسالة؟'))return;const r=await api('/api/owner/broadcast',{target:$('#bcS').value,text:$('#bcT').value});toast(r.ok?`✅ أُرسلت لـ ${r.n} سيرفر`:'فشل')};
+$('#blAdd').onclick=async()=>{const id=$('#blId').value.trim();if(!/^\d{15,22}$/.test(id))return toast('ID غير صحيح');await api('/api/owner/blacklist',{id,add:true});$('#blId').value='';load()};
+load(true);setInterval(()=>load(false),60000);
+</script></body></html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Systemix | لوحة التحكم</title>
+<link rel="icon" href="/logo.webp">
+<style>
+:root{--bg:#07040d;--card:#120a1f;--card2:#0c0716;--line:#2a1646;--p:#8b2fe8;--p2:#b46bff;--tx:#f1e9ff;--mu:#a592c4;--ok:#2ecc71;--bad:#ff4d6d}
+*{box-sizing:border-box;margin:0;font-family:Tahoma,"Segoe UI",sans-serif}
+body{background:radial-gradient(900px 500px at 85% -10%,#3b0f73aa,transparent),radial-gradient(700px 500px at 0% 110%,#5a14a855,transparent),var(--bg);color:var(--tx);min-height:100vh}
+button{cursor:pointer;border:0;border-radius:10px;padding:9px 15px;background:var(--p);color:#fff;font-size:13px}
+button:hover{background:var(--p2)}button.g{background:#1e1233;border:1px solid var(--line)}button.d{background:var(--bad)}button.s{padding:6px 10px}
+input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:9px;font-size:13px}
+textarea{min-height:80px;resize:vertical}input[type=color]{height:40px;padding:3px}input[type=checkbox]{width:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:250px;background:#0c0716f2;border-left:1px solid var(--line);padding:16px 12px;overflow-y:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;margin-bottom:12px}.brand img{width:40px;border-radius:50%}
+.srvcard{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px}
+.srvcard b{display:block;color:var(--p2);font-size:14px}.srvcard a{color:var(--mu);font-size:12px;text-decoration:none}
+.gt{color:var(--mu);font-size:11px;margin:14px 8px 4px;font-weight:700}
+.nv{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:transparent;color:var(--tx);padding:9px 10px;border-radius:10px;font-size:14px}
+.nv:hover,.nv.on{background:#2a1646}.nv.on{border:1px solid var(--p)}.nv i{font-style:normal;width:22px;text-align:center}.nv span{flex:1}.nv em{font-style:normal;color:#fff;background:var(--ok);border-radius:50%;width:18px;height:18px;font-size:11px;display:grid;place-items:center}
+.out{margin-top:16px;width:100%}
+main{margin-right:250px;padding:22px;max-width:1150px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}.top h2{font-size:22px}
+.pd{color:var(--mu);font-size:13px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:8px}.ch h3{font-size:16px}
+.mu,small{color:var(--mu);font-size:12px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}.grid .card{margin:0}.n{font-size:26px;font-weight:700;color:var(--p2);margin-top:4px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.rl b{display:block;font-size:14px;font-weight:600}.rl small{display:block}.rc{display:flex;align-items:center;gap:8px}
+.fld{margin:12px 0}.fld>label{display:block;font-size:13px;color:var(--tx);margin-bottom:4px}.fld>small{display:block;margin-bottom:6px}
+.sw{position:relative;width:46px;height:26px;flex:none;display:inline-block}.sw input{display:none}
+.sw span{position:absolute;inset:0;background:#33224f;border-radius:20px;transition:.2s;cursor:pointer}
+.sw span:after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s}
+.sw input:checked+span{background:var(--p)}.sw input:checked+span:after{right:23px}
+.pcard{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:22px;border-radius:20px;margin-bottom:14px;background:linear-gradient(135deg,#2b0a3d,#12061f);border:1px solid #5a2a8f}
+.pcard.on{background:linear-gradient(135deg,#4a0a1a,#1f0510);border-color:var(--bad)}.pcard .t{flex:1;min-width:200px}
+.ring{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:#1e1233;border:2px solid var(--p);box-shadow:0 0 24px #8b2fe866}
+.pcard.on .ring{border-color:var(--bad);animation:pl 1.4s infinite}@keyframes pl{0%,100%{box-shadow:0 0 18px #ff4d6d66}50%{box-shadow:0 0 50px #ff4d6dcc}}
+.pbtn{padding:14px 26px;font-size:16px;font-weight:700;background:linear-gradient(135deg,#ff2d55,#b0123a)}.pcard.on .pbtn{background:linear-gradient(135deg,#2ecc71,#118a4a)}
+.tag{display:inline-flex;gap:8px;align-items:center;background:#241338;border:1px solid var(--line);padding:5px 10px;border-radius:20px;margin:3px;font-size:13px}.tag b{cursor:pointer;color:var(--bad)}
+.ip{display:flex;gap:8px;margin-top:8px}.wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.item{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.item:last-child{border:0}.item small{display:block}
+.pv{background:var(--card2);border-right:4px solid var(--p);border-radius:8px;padding:12px;margin-top:10px;white-space:pre-wrap;font-size:13px}
+.ban{border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:14px}
+.lgrow{display:grid;grid-template-columns:46px 1fr minmax(120px,200px) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.cnt{color:var(--mu);font-size:12px;margin-inline-start:8px}
+#toast{position:fixed;bottom:20px;left:20px;background:var(--p);padding:12px 18px;border-radius:12px;display:none;z-index:50}
+#modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:40;padding:16px}#modal .card{max-width:520px;width:100%;margin:0}
+.bar{display:none;position:sticky;top:0;z-index:6;background:#0c0716;border-bottom:1px solid var(--line);padding:8px}
+@media(max-width:860px){aside{position:static;width:auto;border:0;border-bottom:1px solid var(--line)}main{margin:0;padding:12px}.lgrow{grid-template-columns:46px 1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <div class="brand"><img src="/logo.webp" alt=""><span>Systemix</span></div>
+  <div class="srvcard"><img src="/logo.webp" width="38" style="border-radius:50%" alt=""><div><b id="gname">…</b><a href="/servers">تغيير السيرفر ↩</a></div></div>
+  <a id="ownLink" href="/owner" style="display:none"><button class="g" style="width:100%;margin-top:6px">👑 لوحة المالك</button></a>
+  <nav id="nav"></nav>
+  <a href="/logout"><button class="g out">تسجيل الخروج</button></a>
+</aside>
+<main>
+  <div class="top"><h2 id="title"></h2><div id="master" class="rc"></div></div>
+  <div class="pd" id="pdesc"></div>
+  <div id="banner"></div>
+  <div id="view"></div>
+</main>
+<div id="toast"></div>
+<div id="modal"></div>
+
+<script>
+'use strict';
+/* ============ helpers ============ */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const get = (o, p) => p.split('.').reduce((a, k) => a?.[k], o);
+const set = (o, p, v) => { const k = p.split('.'), l = k.pop(); k.forEach((x) => (o = o[x] ??= {})); o[l] = v; };
+const toast = (m) => { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => (t.style.display = 'none'), 2500); };
+async function api(path, body, method) {
+  try {
+    const r = await fetch(path, { method: method || (body ? 'POST' : 'GET'), credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    return await r.json();
+  } catch { toast('تعذر الاتصال بالسيرفر'); return null; }
+}
+const fmtD = (t) => new Date(t).toLocaleString('ar-SA');
+const ok = (r, m = '✅ تم') => toast(r && r.ok ? m : (r && r.msg) || '❌ فشل');
+
+/* ============ defaults / state ============ */
+const DEF = {
+  on: true, logCh: '', evCh: '', limit: 3, window: 10, punish: 'ban', altDays: 3, panicScore: 12, raidJoins: 8, raidMin: 5, raidAct: 'kick', maxMentions: 5, autoBackup: 0,
+  spamMsgs: 6, spamSec: 5, muteMin: 60, warnMax: 3, warnAct: 'timeout', capsOn: false, capsPct: 70, blockInvites: false, allowInv: '', badWords: '', wordAction: 'timeout', badDomains: '',
+  autoPanic: false, dmPunish: false, honeypot: '', autorole: '', botrole: '', ar: [], stats: [], lg: {},
+  sec: { nuke: 1, ban: 1, chan: 1, role: 1, hook: 1, vanity: 1, esc: 1, alt: 1, emoji: 1, gset: 1, integ: 1, bots: 1, raid: 1, honey: 1, trust: 1, restore: 1, spam: 1, words: 1, link: 1, mention: 1 },
+  welcome: { on: true, ch: '', title: '', color: '#2ecc71', msg: 'حياك الله {user} في {server} 👋\nأنت العضو رقم {count}', dm: false, dmMsg: '' },
+  leave: { on: false, ch: '', msg: '{user} غادر السيرفر 😢' },
+  lvl: { on: true, announce: true, ch: '', msg: '🎉 مبروك {user} وصلت لفل **{level}**', min: 15, max: 25, cd: 60, ignore: [], rewards: [] },
+  tk: { ch: '', cat: '', role: '' }, verify: { ch: '', role: '' },
+  star: { on: false, ch: '', n: 3, emoji: '⭐', self: false }, tv: { on: false, ch: '', cat: '', name: '🔊 {user}', limit: 0 },
+};
+let S = JSON.parse(JSON.stringify(DEF)), ST = {}, cur = 'home', saveT;
+const merge = (d, s) => { for (const k in s) d[k] = d[k] && typeof d[k] === 'object' && !Array.isArray(d[k]) && s[k] && typeof s[k] === 'object' ? merge(d[k], s[k]) : s[k]; return d; };
+
+async function save(msg = '✅ حُفظ وطُبّق على البوت') {
+  const r = await api('/api/config', S, 'PUT');
+  if (r && r.ok) toast(msg);
+  else if (r && r.error === 'login') { toast('⚠️ انتهت الجلسة، سجّل الدخول من جديد'); setTimeout(() => (location.href = '/'), 1500); }
+  else if (r && r.error === 'sub') toast('⛔ اشتراك البوت متوقف في هذا السيرفر — تواصل مع المالك');
+  else toast('❌ لم يُحفظ — تأكد أن البوت شغّال');
+}
+const autosave = () => { clearTimeout(saveT); saveT = setTimeout(() => save('✅ حُفظ تلقائياً وطُبّق'), 600); };
+async function refresh() { const st = await api('/api/state'); if (st && !st.error) { ST = st; } return st; }
+
+/* ============ UI builders ============ */
+const sw = (p, d = true) => `<label class="sw"><input type="checkbox" data-p="${p}" ${(get(S, p) ?? d) ? 'checked' : ''}><span></span></label>`;
+const row = (ic, l, d, ctl) => `<div class="row"><div class="rl"><b>${ic ? ic + ' ' : ''}${l}</b>${d ? `<small>${d}</small>` : ''}</div><div class="rc">${ctl}</div></div>`;
+const tog = (p, ic, l, d, def = true) => row(ic, l, d, sw(p, def));
+const fld = (l, d, inner) => `<div class="fld"><label>${l}</label>${d ? `<small>${d}</small>` : ''}${inner}</div>`;
+const inp = (p, l, d, ph = '', type = 'text') => fld(l, d, `<input type="${type}" data-v="${p}" value="${esc(get(S, p) ?? '')}" placeholder="${esc(ph)}">`);
+const num = (p, l, d, min, max, def) => fld(l, d, `<input type="number" min="${min}" max="${max}" data-n="${p}" value="${get(S, p) ?? def}">`);
+const area = (p, l, d, ph = '') => fld(l, d, `<textarea data-v="${p}" placeholder="${esc(ph)}">${esc(get(S, p) ?? '')}</textarea>`);
+const sel = (p, l, d, opts) => fld(l, d, `<select data-v="${p}">${opts.map(([v, n]) => `<option value="${v}" ${String(get(S, p)) === String(v) ? 'selected' : ''}>${n}</option>`).join('')}</select>`);
+const opts = (list, val, ph) => `<option value="">${ph}</option>` + list.map((x) => `<option value="${x.id}" ${x.id === val ? 'selected' : ''}>${esc(x.name)}</option>`).join('');
+const pick = (p, l, d, list, ph = '— بدون —') => fld(l, d, `<select data-v="${p}">${opts(list, get(S, p), ph)}</select>`);
+const card = (ic, t, d, body, head = '') => `<section class="card"><div class="ch"><h3>${ic} ${t}</h3>${head}</div>${d ? `<p class="mu" style="margin-bottom:6px">${d}</p>` : ''}${body}</section>`;
+const btn = (act, label, cls = '', extra = '') => `<button class="${cls}" data-act="${act}" ${extra}>${label}</button>`;
+const SAVE = `<div class="wrap">${btn('save', 'حفظ')}<small style="align-self:center">الحفظ يتم تلقائياً أيضاً</small></div>`;
+const chText = () => ST.channels || [], chVoice = () => ST.voices || [], roles = () => ST.roles || [], cats = () => ST.categories || [];
+const chOpts = () => (ST.channels || []).map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+
+/* ============ navigation ============ */
+const NAV = [
+  ['عام', [['home', '📊', 'نظرة عامة'], ['srv', '⚙️', 'إعدادات السيرفر'], ['emb', '🧩', 'رسائل الإيمبد']]],
+  ['الأنظمة', [['wel', '👋', 'الترحيب والوداع'], ['ar', '💬', 'الردود التلقائية'], ['lvl', '🏆', 'نظام المستويات'], ['arole', '🎖️', 'الرتب التلقائية'], ['srole', '😀', 'رتب ذاتية'],
+    ['star', '⭐', 'لوحة النجوم'], ['tv', '➕', 'رومات مؤقتة'], ['stats', '📈', 'الإحصائيات'], ['tk', '🎫', 'التذاكر']]],
+  ['الإدارة والحماية', [['mod', '🔨', 'الإدارة'], ['logs', '📜', 'اللوقات'], ['auto', '🛡️', 'الحماية التلقائية'], ['raid', '🚨', 'مكافحة الهجمات'], ['bk', '💾', 'النسخ الاحتياطي'], ['bin', '♻️', 'سلة الاستعادة']]],
+  ['أخرى', [['top', '🥇', 'لوحة المتصدرين'], ['acts', '🗂️', 'سجل الإجراءات'], ['dlog', '🧾', 'سجل لوحة التحكم'], ['bot', '🤖', 'إعدادات البوت']]],
+];
+const PD = {
+  home: 'نظرة سريعة على سيرفرك والبوت، مع زر الطوارئ.', srv: 'الإعدادات العامة للبوت داخل هذا السيرفر.', emb: 'أرسل رسالة إمبد منسّقة لأي قناة.',
+  wel: 'رسائل الترحيب بالأعضاء الجدد والوداع عند المغادرة.', ar: 'ردود يرسلها البوت تلقائياً عند كلمات معينة.', lvl: 'نقاط وفلات للأعضاء المتفاعلين مع رتب مكافآت.',
+  arole: 'رتب يعطيها البوت تلقائياً لكل داخل جديد.', srole: 'لوحة أزرار يأخذ منها الأعضاء رتبهم بأنفسهم.', star: 'الرسائل اللي تجمع نجوم كثيرة تُنشر في قناة مخصصة.',
+  tv: 'روم صوتي يُنشئ لكل عضو روماً خاصاً ويحذفه لما يفضى.', stats: 'رومات صوتية تعرض أرقام السيرفر وتتحدث تلقائياً.', tk: 'نظام الدعم الفني بالتذاكر.',
+  mod: 'إجراءات إدارية سريعة على الأعضاء والرومات.', logs: 'اختر الأحداث اللي يسجلها البوت، وقناة كل حدث، وشكل الرسالة.',
+  auto: 'فلاتر تلقائية للمحتوى: سبام، كلمات، روابط، منشن، دعوات.', raid: 'حمايات التخريب والغارات وقناة الفخ وبوابة التحقق والقائمة البيضاء.',
+  bk: 'احفظ نسخة من الرتب والرومات واستعدها وقت الحاجة.', bin: 'الرومات والرتب المحذوفة مؤخراً، تقدر ترجعها بضغطة.', top: 'أعلى الأعضاء نقاطاً في السيرفر.',
+  acts: 'سجل الإجراءات اللي نفذها البوت أو الإدارة على الأعضاء.', dlog: 'من غيّر ماذا في لوحة التحكم ومتى.', bot: 'حالة البوت، تصدير واستيراد الإعدادات.',
+};
+const ENABLED = {
+  wel: () => S.welcome.on || S.leave.on, ar: () => S.ar.length > 0, lvl: () => S.lvl.on !== false, arole: () => !!(S.autorole || S.botrole), star: () => S.star.on, tv: () => S.tv.on,
+  stats: () => S.stats.length > 0, tk: () => !!S.tk.ch, logs: () => LOG_KEYS.some(lgOn), auto: () => ['spam', 'words', 'link', 'mention'].some((k) => S.sec[k]),
+  raid: () => ['nuke', 'raid', 'bots', 'esc'].some((k) => S.sec[k]),
+};
+function drawNav() {
+  $('#nav').innerHTML = NAV.map(([g, items]) => `<div class="gt">${g}</div>` + items.map(([k, ic, n]) => `<button class="nv ${k === cur ? 'on' : ''}" data-go="${k}"><i>${ic}</i><span>${n}</span>${ENABLED[k]?.() ? '<em>✓</em>' : ''}</button>`).join('')).join('');
+}
+function drawTop() {
+  const label = NAV.flatMap((g) => g[1]).find((x) => x[0] === cur);
+  $('#title').textContent = label ? label[2] : '';
+  $('#pdesc').textContent = PD[cur] || '';
+  $('#master').innerHTML = `<small>${S.on !== false ? '🟢 البوت يعمل' : '🔴 البوت متوقف'}</small>${sw('on', true)}`;
+  const sb = ST.sub;
+  $('#banner').innerHTML = sb && (!sb.active || (sb.days !== null && sb.days <= 7))
+    ? `<div class="ban" style="background:${sb.active ? '#2a2208' : '#2a0a12'};border:1px solid ${sb.active ? '#f1c40f' : '#ff4d6d'}">${sb.active ? `⏰ اشتراك البوت ينتهي بعد ${sb.days} يوم.` : '⛔ اشتراك البوت متوقف أو منتهي في هذا السيرفر، والبوت لا يعمل حالياً.'} ${esc(sb.msg || '')} ${sb.contact ? '— ' + esc(sb.contact) : ''}</div>` : '';
+}
+async function go(p) {
+  cur = p; location.hash = '#/' + p;
+  drawTop(); drawNav();
+  const v = $('#view');
+  v.innerHTML = '<p class="mu">جاري التحميل…</p>';
+  if (P[p].load) await P[p].load();
+  v.innerHTML = P[p].render();
+  P[p].after?.();
+  window.scrollTo(0, 0);
+}
+
+/* ============ logs catalog ============ */
+const LOGS = [
+  ['👤', 'الأعضاء', [['join', '📥', 'دخول عضو'], ['leave', '📤', 'خروج عضو'], ['nick', '🏷️', 'تغيير لقب'], ['mrole', '🎭', 'تغيير رتب عضو'], ['timeout', '🔇', 'كتم مؤقت'], ['ban', '🔨', 'حظر'], ['unban', '♻️', 'فك حظر']]],
+  ['💬', 'الرسائل', [['msgdel', '🗑️', 'حذف رسالة'], ['msgedit', '✏️', 'تعديل رسالة']]],
+  ['📁', 'الرومات', [['chcreate', '📁', 'إنشاء روم'], ['chdelete', '🗑️', 'حذف روم'], ['chupdate', '🛠️', 'تعديل روم (اسم، وصف، صلاحيات...)']]],
+  ['🎭', 'الرتب', [['rolecreate', '🎭', 'إنشاء رتبة'], ['roledelete', '🗑️', 'حذف رتبة'], ['roleupdate', '🛠️', 'تعديل رتبة (اسم، لون، صلاحيات...)']]],
+  ['🔊', 'الصوت', [['vjoin', '🔊', 'دخول روم صوتي'], ['vleave', '🔇', 'خروج من روم صوتي'], ['vmove', '🔀', 'انتقال بين الرومات']]],
+  ['⚙️', 'السيرفر', [['gupdate', '⚙️', 'تعديل إعدادات السيرفر'], ['emojiadd', '😀', 'إضافة إيموجي'], ['emojidel', '🗑️', 'حذف إيموجي'], ['invcreate', '🔗', 'إنشاء دعوة'], ['invdelete', '🔗', 'حذف دعوة']]],
+  ['🧩', 'الأنظمة', [['protect', '🛡️', 'الحماية التلقائية (تنبيهات الحماية)'], ['tkopen', '🎫', 'فتح تذكرة'], ['tkclose', '🔒', 'إغلاق تذكرة']]],
+];
+const LOG_KEYS = LOGS.flatMap((c) => c[2].map((e) => e[0]));
+const lgOn = (k) => (k === 'protect' ? S.lg?.[k]?.on !== false : S.lg?.[k]?.on === true);
+
+/* ============ pages ============ */
+const P = {
+  home: {
+    render() {
+      const sub = ST.sub, protOn = Object.values(S.sec).filter(Boolean).length;
+      const subTxt = !sub ? '—' : sub.free ? 'بدون قيود' : sub.active ? (sub.plan || 'نشط') + (sub.days !== null ? ` — باقي ${sub.days} يوم` : ' — بدون انتهاء') : 'متوقف';
+      const st = Object.entries(ST.stats || {}).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      return `<div class="pcard ${S.panic ? 'on' : ''}"><div class="ring">${S.panic ? '🔒' : '🛡️'}</div><div class="t"><h3>${S.panic ? 'الطوارئ مفعّلة' : 'وضع الطوارئ'}</h3>
+        <p class="mu">${S.panic ? 'السيرفر مقفل: الكتابة ممنوعة والانضمام موقوف.' : 'يقفل القنوات ويمنع الانضمام بضغطة واحدة.'}</p></div>${btn('panic', S.panic ? 'إيقاف الطوارئ' : 'تفعيل الطوارئ', 'pbtn')}</div>
+      <div class="grid">
+        <div class="card"><small>👥 الأعضاء</small><div class="n">${ST.members ?? '—'}</div><small>عدد أعضاء السيرفر</small></div>
+        <div class="card"><small>📡 سرعة البوت</small><div class="n">${ST.ping ?? '—'}ms</div><small>الاستجابة مع ديسكورد</small></div>
+        <div class="card"><small>🛡️ الحمايات المفعّلة</small><div class="n">${protOn}/${Object.keys(S.sec).length}</div><small>من إجمالي الحمايات</small></div>
+        <div class="card"><small>🎫 الاشتراك</small><div class="n" style="font-size:18px">${esc(subTxt)}</div><small>حالة اشتراك البوت ومدته</small></div>
+        <div class="card"><small>📁 الرومات / الرتب</small><div class="n">${ST.chCount} / ${ST.roleCount}</div><small>داخل السيرفر</small></div>
+        <div class="card"><small>⏱️ مدة التشغيل</small><div class="n">${Math.floor(ST.uptime / 3600)}س ${Math.floor((ST.uptime % 3600) / 60)}د</div><small>منذ آخر تشغيل</small></div></div>
+      ${card('📈', 'إحصائيات الأحداث الأمنية', 'أكثر الأحداث اللي سجلها البوت.', st.map(([k, v]) => `<div class="item"><b>${esc(k)}</b> — ${v}</div>`).join('') || '<small>لا أحداث بعد</small>')}
+      ${card('🗂️', 'آخر الإجراءات', 'آخر ما نُفّذ على الأعضاء.', (ST.acts || []).slice(0, 5).map((a) => `<div class="item"><b>${esc(a.type)}</b> — ${esc(a.uid || '')}<small>${esc(a.text)} • ${fmtD(a.t)}</small></div>`).join('') || '<small>لا إجراءات بعد</small>')}`;
+    },
+  },
+  srv: {
+    render() {
+      return card('🤖', 'اسم البوت في هذا السيرفر', 'يغيّر لقب البوت (Nickname) داخل سيرفرك فقط.', `<div class="ip"><input id="nick" placeholder="Systemix">${btn('nick', 'تطبيق')}</div>`) +
+        card('📜', 'قنوات السجلات', 'القنوات الافتراضية لتنبيهات الحماية وسجلات الأحداث.',
+          pick('logCh', 'قناة اللوج الأساسية', 'تنرسل فيها تنبيهات الحماية مع أزرار الحظر والعزل.', chText(), '— اختر قناة —') + pick('evCh', 'الروم الافتراضي لسجلات الأحداث', 'تُستخدم لأي حدث ما حددت له قناة خاصة في صفحة اللوقات.', chText(), '— قناة اللوج الأساسية —')) +
+        card('⚖️', 'العقوبات', '', tog('dmPunish', '✉️', 'إرسال رسالة خاصة للعضو عند العقوبة', 'يصل العضو سبب الحظر أو الطرد أو الكتم أو التحذير في الخاص.', false)) + SAVE;
+    },
+  },
+  emb: {
+    render() {
+      return card('🧩', 'إنشاء رسالة إمبد', 'اكتب الرسالة وشوف المعاينة مباشرة قبل الإرسال.',
+        fld('القناة', 'القناة اللي تنرسل فيها الرسالة.', `<select id="emCh">${chOpts()}</select>`) + fld('العنوان', '', '<input id="emT" data-pv>') + fld('النص', 'يدعم تنسيق ديسكورد (**غامق** و*مائل*).', '<textarea id="emD" data-pv></textarea>') +
+        fld('اللون', 'لون الشريط الجانبي.', '<input id="emC" type="color" value="#8b2fe8" data-pv>') + fld('رابط صورة كبيرة (اختياري)', '', '<input id="emI" placeholder="https://...">') +
+        fld('رابط صورة مصغرة (اختياري)', '', '<input id="emTh" placeholder="https://...">') + fld('التذييل (اختياري)', '', '<input id="emF" data-pv>') +
+        `<div class="pv" id="emPv" style="border-color:#8b2fe8"></div><div class="wrap">${btn('embSend', '📤 إرسال')}</div>`);
+    },
+    after() { emPv(); },
+  },
+  wel: {
+    render() {
+      return card('👋', 'رسالة الترحيب', 'تُرسل للعضو الجديد في القناة المحددة.', tog('welcome.on', '✅', 'تفعيل الترحيب', 'تشغيل أو إيقاف رسالة الترحيب.') +
+        pick('welcome.ch', 'القناة', 'القناة اللي تنرسل فيها رسالة الترحيب.', chText(), '— اختر قناة —') + inp('welcome.title', 'عنوان الإمبد', 'العنوان أعلى بطاقة الترحيب.', 'أهلاً وسهلاً 👋') +
+        inp('welcome.color', 'لون الإمبد', 'لون الشريط الجانبي.', '', 'color') + area('welcome.msg', 'النص', '{user} تمنشن العضو، {server} اسم السيرفر، {count} عدد الأعضاء.') + '<div class="pv" id="wpv"></div>' +
+        tog('welcome.dm', '✉️', 'رسالة خاصة للعضو الجديد', 'يرسل البوت رسالة DM لكل عضو جديد.', false) + area('welcome.dmMsg', 'نص الرسالة الخاصة', 'يدعم نفس المتغيرات.')) +
+        card('😢', 'رسالة المغادرة', 'تُرسل لما يغادر عضو.', tog('leave.on', '✅', 'تفعيل رسالة المغادرة', 'تشغيل أو إيقاف رسالة الوداع.', false) + pick('leave.ch', 'القناة', 'القناة اللي تنرسل فيها رسالة المغادرة.', chText(), '— اختر قناة —') + area('leave.msg', 'النص', 'تقدر تستخدم {user} و{server} و{count}.')) + SAVE;
+    },
+    after() { wPv(); },
+  },
+  ar: {
+    render() {
+      return card('💬', 'الردود التلقائية', 'يرد البوت لما يكتب العضو كلمة معينة.',
+        (S.ar.map((a, i) => `<div class="row"><div class="rl"><b>${a.exact ? '=' : '∋'} ${esc(a.t)}</b><small>← ${esc(a.r)}</small></div>${btn('arDel', 'حذف', 'd s', `data-i="${i}"`)}</div>`).join('') || '<small>لا ردود بعد</small>') +
+        fld('إذا كتب العضو', 'الكلمة اللي تشغّل الرد.', '<input id="arT">') + fld('رد البوت', 'نص الرد.', '<textarea id="arR"></textarea>') +
+        row('', 'تطابق كامل فقط', 'إذا فعّلته يرد فقط لما تكون الرسالة مطابقة تماماً للكلمة.', '<label class="sw"><input type="checkbox" id="arE"><span></span></label>') + `<div class="wrap">${btn('arAdd', 'إضافة رد')}</div>`);
+    },
+  },
+  lvl: {
+    render() {
+      return card('🏆', 'نظام المستويات', 'يعطي الأعضاء نقاط عن كل رسالة ويرفع مستواهم تلقائياً.',
+        tog('lvl.on', '✅', 'تفعيل المستويات', 'تشغيل أو إيقاف النظام كاملاً.') + tog('lvl.announce', '🎉', 'إعلان رفع المستوى', 'يرسل تهنئة لما يرتفع مستوى العضو.') +
+        pick('lvl.ch', 'قناة الإعلان', 'إذا تركتها فاضية يرسل في نفس قناة العضو.', chText(), '— نفس قناة العضو —') + area('lvl.msg', 'رسالة رفع المستوى', '{user} تمنشن العضو، {level} المستوى الجديد.') +
+        num('lvl.min', 'أقل نقاط للرسالة', 'أقل ما يكسبه العضو عن الرسالة.', 1, 500, 15) + num('lvl.max', 'أعلى نقاط للرسالة', 'أعلى ما يكسبه العضو عن الرسالة.', 1, 500, 25) +
+        num('lvl.cd', 'الانتظار بين الرسائل (ثواني)', 'المدة اللازمة بين رسالتين حتى تُحسب النقاط.', 1, 600, 60)) +
+        card('🚫', 'رومات بدون نقاط', 'الرسائل في هذه الرومات ما تعطي نقاط.', `<div>${chText().map((c) => `<label class="tag"><input type="checkbox" data-ign="${c.id}" ${S.lvl.ignore.includes(c.id) ? 'checked' : ''}> ${esc(c.name)}</label>`).join('')}</div>`) +
+        card('🎖️', 'رتب المكافآت', 'رتب يستلمها العضو تلقائياً عند وصوله لفل معين.',
+          S.lvl.rewards.map((r, i) => `<span class="tag">فل ${r.lvl} ← ${esc(r.role)} <b data-act="rwDel" data-i="${i}">✕</b></span>`).join('') +
+          `<div class="ip"><input id="rwL" type="number" placeholder="الفل"><select id="rwR">${roles().map((r) => `<option>${esc(r.name)}</option>`).join('')}</select>${btn('rwAdd', 'إضافة')}</div>`) +
+        card('🧹', 'تصفير النقاط', '', btn('xpReset', 'تصفير كل النقاط', 'd') + '<br><small>يمسح نقاط جميع الأعضاء ولا يمكن التراجع.</small>');
+    },
+  },
+  arole: {
+    render() {
+      return card('🎖️', 'الرتب التلقائية', 'يعطي كل داخل جديد رتبة تلقائياً (للأعضاء وللبوتات).',
+        pick('autorole', 'رتبة الأعضاء', 'الرتبة اللي ياخذها كل عضو يدخل.', roles()) + pick('botrole', 'رتبة البوتات', 'الرتبة اللي ياخذها كل بوت يدخل.', roles())) + SAVE;
+    },
+  },
+  srole: {
+    render() {
+      return card('😀', 'لوحة رتب ذاتية', 'ينشر لوحة أزرار؛ العضو يضغط ياخذ الرتبة أو يسحبها. الرتب الإدارية ممنوعة لأمانك.',
+        fld('القناة', 'اللي تنشر فيها اللوحة.', `<select id="rrCh">${chOpts()}</select>`) + fld('العنوان', '', '<input id="rrT" placeholder="اختر رتبك">') +
+        fld('الرتب', 'اختر الرتب اللي تظهر كأزرار.', `<div>${roles().map((r) => `<label class="tag"><input type="checkbox" class="rrc" value="${r.id}"> ${esc(r.name)}</label>`).join('')}</div>`) + `<div class="wrap">${btn('rrPost', 'نشر اللوحة')}</div>`);
+    },
+  },
+  star: {
+    render() {
+      return card('⭐', 'لوحة النجوم', 'لما تجمع رسالة عدد معين من النجوم تُنشر في قناة اللوحة.', tog('star.on', '✅', 'تفعيل لوحة النجوم', 'تشغيل أو إيقاف النظام.', false) +
+        pick('star.ch', 'قناة اللوحة', 'القناة اللي تنتشر فيها الرسائل المميزة.', chText(), '— اختر قناة —') + num('star.n', 'عدد النجوم المطلوب', 'كم نجمة تحتاج الرسالة.', 1, 50, 3) +
+        sel('star.emoji', 'الإيموجي', 'التفاعل اللي يُحسب.', [['⭐', '⭐ نجمة'], ['🌟', '🌟 نجمة لامعة'], ['❤️', '❤️ قلب'], ['🔥', '🔥 نار']]) +
+        tog('star.self', '🙋', 'احتساب تفاعل صاحب الرسالة', 'إذا أطفيته ما يُحسب تفاعل كاتب الرسالة نفسه.', false)) + SAVE;
+    },
+  },
+  tv: {
+    render() {
+      return card('➕', 'رومات صوتية مؤقتة', 'العضو يدخل روم "إنشاء" فيُنشئ البوت له روم خاص ويحذفه لما يفضى.', tog('tv.on', '✅', 'تفعيل الرومات المؤقتة', 'تشغيل أو إيقاف النظام.', false) +
+        pick('tv.ch', 'روم الإنشاء (صوتي)', 'لما العضو يدخله يُنشأ له روم.', chVoice(), '— اختر روم صوتي —') + pick('tv.cat', 'الفئة', 'الفئة اللي تُنشأ فيها الرومات.', cats(), '— نفس فئة روم الإنشاء —') +
+        inp('tv.name', 'اسم الروم', '{user} اسم العضو.', '🔊 {user}') + num('tv.limit', 'حد الأعضاء', '0 = بدون حد.', 0, 99, 0)) + SAVE;
+    },
+  },
+  stats: {
+    render() {
+      return card('📈', 'رومات الإحصائيات', 'رومات صوتية تتحدث كل 10 دقايق. المتغيرات: {members} {humans} {bots} {channels} {roles} {boosts}.',
+        (S.stats.map((s, i) => `<div class="row"><div class="rl"><b>${esc((chVoice().find((c) => c.id === s.ch) || {}).name || s.ch)}</b><small>${esc(s.tpl)}</small></div>${btn('stDel', 'حذف', 'd s', `data-i="${i}"`)}</div>`).join('') || '<small>لا رومات بعد</small>') +
+        fld('الروم الصوتي', 'اختر روم موجود أو أنشئ جديد.', `<select id="stCh">${chVoice().map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>`) + fld('الصيغة', '', '<input id="stT" value="👥 الأعضاء: {members}">') +
+        `<div class="wrap">${btn('stAdd', 'إضافة')}${btn('stNew', 'إنشاء روم جديد', 'g')}${btn('stUp', 'تحديث الآن', 'g')}</div>`);
+    },
+  },
+  tk: {
+    render() {
+      return card('🎫', 'نظام التذاكر', 'العضو يضغط زر فيُفتح له روم خاص مع الإدارة.', pick('tk.ch', 'قناة اللوحة', 'القناة اللي يُنشر فيها زر فتح التذاكر.', chText(), '— اختر قناة —') +
+        pick('tk.cat', 'كاتيجوري التذاكر', 'الفئة اللي تُنشأ فيها رومات التذاكر.', cats()) + pick('tk.role', 'رتبة الدعم', 'الرتبة اللي ترى كل التذاكر وترد عليها.', roles()) +
+        `<div class="wrap">${btn('save', 'حفظ')}${btn('tkPost', 'نشر اللوحة الآن', 'g')}</div>`);
+    },
+  },
+  mod: {
+    render() {
+      const B = (a, l, t, c = 'g') => `<button class="${c}" data-md="${a}" title="${t}">${l}</button>`;
+      return card('👤', 'إجراءات على عضو', 'أدوات إدارة سريعة بالـ ID (كليك يمين على العضو ← Copy User ID).',
+        fld('ID العضو', '', '<input id="mdId" placeholder="123456789012345678">') + fld('السبب (اختياري)', 'يُسجّل مع الإجراء.', '<input id="mdR">') + fld('مدة الكتم (دقائق)', 'للإجراء كتم.', '<input id="mdM" type="number" value="60">') +
+        fld('رتبة', 'تُستخدم في إعطاء أو سحب الرتبة.', `<select id="mdRole">${roles().map((r) => `<option value="${r.id}">${esc(r.name)}</option>`).join('')}</select>`) + fld('لقب جديد', 'فاضي = إزالة اللقب.', '<input id="mdN">') +
+        `<div class="wrap">${B('ban', 'حظر', 'يمنع العضو من السيرفر نهائياً', 'd')}${B('unban', 'فك الحظر', 'يرجع السماح للعضو بالدخول')}${B('kick', 'طرد', 'يخرج العضو ويقدر يرجع برابط')}${B('strip', 'سحب كل الرتب', 'يسحب كل رتب العضو')}
+        ${B('timeout', 'كتم', 'يمنع العضو من الكتابة والكلام')}${B('untimeout', 'فك الكتم', 'يلغي الكتم')}${B('addrole', 'إعطاء الرتبة', 'يعطي الرتبة المختارة')}${B('rmrole', 'سحب الرتبة', 'يسحب الرتبة المختارة')}
+        ${B('nick', 'تغيير اللقب', 'يغيّر لقب العضو')}${B('warn', 'تحذير', 'يسجل تحذير؛ عند بلوغ الحد تُنفَّذ عقوبة')}${B('clearwarns', 'مسح التحذيرات', 'يصفّر تحذيرات العضو')}${btn('mdW', 'عرض التحذيرات', 'g')}</div><div id="mdWL" class="mu" style="margin-top:10px"></div>`) +
+        card('⚖️', 'إعدادات العقوبات', 'تنطبق على التحذيرات والفلاتر.', num('warnMax', 'عدد التحذيرات قبل العقوبة', 'بعد هذا العدد تُنفَّذ العقوبة تلقائياً.', 1, 20, 3) +
+          sel('warnAct', 'عقوبة التحذيرات', 'ماذا يحصل عند بلوغ الحد.', [['timeout', 'كتم'], ['kick', 'طرد'], ['ban', 'حظر']]) + num('muteMin', 'مدة الكتم التلقائي (دقائق)', 'مدة الكتم لمخالفي الفلاتر والتحذيرات.', 1, 40320, 60)) +
+        card('📁', 'أدوات الرومات', 'تحكم سريع في القنوات النصية.', fld('القناة', '', `<select id="chSel">${chOpts()}</select>`) + fld('القيمة', 'ثواني للسلو مود، أو عدد الرسائل للمسح (حتى 100).', '<input id="chV" type="number" value="5">') +
+          fld('عنوان (اختياري)', 'إذا كتبت عنواناً تُرسل الرسالة كإمبد.', '<input id="chTi">') + fld('نص الإعلان', '', '<textarea id="chT"></textarea>') +
+          `<div class="wrap"><button class="g" data-ch="lock" title="يمنع الجميع من الكتابة">🔒 قفل</button><button class="g" data-ch="unlock" title="يرجع السماح بالكتابة">🔓 فتح</button><button class="g" data-ch="slow" title="فاصل بين رسائل العضو">سلو مود</button><button class="d" data-ch="purge" title="يمسح آخر الرسائل (أحدث من 14 يوم)">مسح رسائل</button><button data-ch="say" title="يرسل النص كإعلان">📢 إرسال</button></div>`) +
+        card('⭐', 'نقاط عضو (XP)', 'تعديل نقاط عضو يدوياً.', fld('ID العضو', '', '<input id="xpId">') + fld('النقاط', '', '<input id="xpVal" type="number" min="0">') + `<div class="wrap">${btn('xpSet', 'تعيين')}</div>`) + SAVE;
+    },
+  },
+  logs: {
+    render() {
+      const head = card('📜', 'القناة الافتراضية', 'الحدث اللي ما حددت له قناة يرسل هنا.', pick('evCh', 'الروم الافتراضي', '', chText(), '— قناة اللوج الأساسية —'));
+      return head + LOGS.map(([ic, name, evs]) => {
+        const n = evs.filter((e) => lgOn(e[0])).length;
+        return card(ic, name + `<span class="cnt">${n}/${evs.length} مفعّل</span>`, '', evs.map(([k, eic, en]) => `<div class="lgrow"><label class="sw"><input type="checkbox" data-lg="${k}" ${lgOn(k) ? 'checked' : ''}><span></span></label>
+          <div class="rl"><b>${eic} ${en}</b></div><select data-lgch="${k}">${opts(chText(), S.lg?.[k]?.ch, 'الروم الافتراضي')}</select>${btn('lgEdit', '✏️', 'g s', `data-k="${k}" title="تعديل شكل الرسالة"`)}</div>`).join(''),
+          `<label class="sw" title="تشغيل/إيقاف الكل"><input type="checkbox" data-lgcat="${name}" ${n === evs.length ? 'checked' : ''}><span></span></label>`);
+      }).join('');
+    },
+  },
+  auto: {
+    render() {
+      return card('💬', 'منع سبام الرسائل', 'يحذف ويكتم من يرسل رسائل كثيرة بسرعة.', tog('sec.spam', '✅', 'تفعيل', 'تشغيل أو إيقاف منع السبام.') + num('spamMsgs', 'عدد الرسائل', 'كم رسالة تُعتبر سبام.', 3, 30, 6) + num('spamSec', 'خلال كم ثانية', 'المدة اللي تُحسب فيها الرسائل.', 2, 60, 5)) +
+        card('🤬', 'الكلمات الممنوعة', 'يحذف الرسائل اللي فيها كلمات من قائمتك.', tog('sec.words', '✅', 'تفعيل', 'تشغيل أو إيقاف الفلتر.') + area('badWords', 'الكلمات', 'كل كلمة بسطر أو افصل بفاصلة (حالة الأحرف لا تهم).') +
+          sel('wordAction', 'العقوبة', 'حذف الرسالة فقط أو حذفها مع كتم صاحبها.', [['timeout', 'حذف + كتم'], ['delete', 'حذف فقط']])) +
+        card('🔠', 'الحروف الكبيرة (EN)', 'يحذف الرسائل الإنجليزية المكتوبة بحروف كبيرة بشكل مبالغ.', tog('capsOn', '✅', 'تفعيل', 'تشغيل أو إيقاف الفلتر.', false) + num('capsPct', 'النسبة %', 'نسبة الحروف الكبيرة اللي تعتبر مخالفة.', 30, 100, 70)) +
+        card('🔗', 'درع الروابط والمنشن', 'يحذف الروابط الخطيرة والمنشن الجماعي.', tog('sec.link', '🔗', 'درع الروابط والتصيّد', 'يحذف الروابط المنتحلة لديسكورد وستيم والدومينات المحظورة ويعاقب ناشرها.') +
+          area('badDomains', 'دومينات محظورة', 'افصل بمسافة أو فاصلة، مثل evil.com.') + tog('sec.mention', '📢', 'منع سبام المنشن', 'يحذف الرسائل اللي فيها منشن جماعي أو @everyone من غير الموثوقين.') +
+          num('maxMentions', 'أقصى عدد منشنات في رسالة', 'أي رسالة فيها منشنات أكثر من هذا تُحذف.', 2, 50, 5)) +
+        card('📨', 'دعوات السيرفرات', 'يمنع نشر روابط دعوة سيرفرات ثانية.', tog('blockInvites', '🚫', 'منع روابط الدعوة', 'الأونر والقائمة البيضاء مستثنون.', false) + inp('allowInv', 'دعوات مسموحة', 'أكواد الدعوات المسموح نشرها، افصل بمسافة.')) + SAVE;
+    },
+  },
+  raid: {
+    render() {
+      const T = [['nuke', '💣', 'Anti-Nuke الشامل', 'المفتاح الرئيسي لحماية التخريب الجماعي؛ إذا أطفيته تتعطل حمايات الحذف والحظر والطرد.'], ['ban', '🔨', 'منع الحظر/الطرد الجماعي', 'يعاقب من يحظر أو يطرد عدة أعضاء بسرعة.'],
+        ['chan', '📁', 'منع حذف القنوات', 'يعاقب من يحذف أو ينشئ أو يعدّل رومات كثيرة بسرعة.'], ['role', '🎭', 'منع حذف الرتب', 'يعاقب من يحذف أو ينشئ أو يعدّل رتب كثيرة بسرعة.'],
+        ['hook', '🪝', 'منع الويب هوكس الخبيثة', 'يحذف أي ويب هوك جديد ينشئه شخص غير موثوق.'], ['vanity', '🔗', 'مراقبة الرابط المميز', 'ينبهك ويعاقب الفاعل (ديسكورد ما يسمح للبوت يسترجعه).'],
+        ['esc', '⬆️', 'منع ترقية Administrator', 'يسحب أي رتبة أو صلاحية خطيرة تُعطى بدون إذن ويعاقب الفاعل.'], ['alt', '🕵️', 'كشف الحسابات الجديدة', 'ينبهك عند دخول حساب عمره أقل من عدد الأيام المحدد.'],
+        ['emoji', '😀', 'حماية الإيموجيات والملصقات', 'يعاقب من يحذف إيموجيات أو ملصقات كثيرة بسرعة.'], ['gset', '🏰', 'حماية إعدادات السيرفر', 'يتراجع عن تغيير الاسم أو الشعار أو مستوى التحقق ويعاقب الفاعل.'],
+        ['integ', '🔌', 'حماية التكاملات', 'يعاقب من يضيف أو يحذف تكاملات بدون صلاحية.'], ['bots', '🤖', 'القائمة البيضاء للبوتات', 'يطرد أي بوت ما أضافه الأونر أو شخص موثوق.'],
+        ['raid', '🌊', 'كشف الغارات', 'يكتشف دخول عدد كبير بثواني ويطردهم ويفعّل وضع الغارة.'], ['honey', '🍯', 'قناة الفخ', 'يعاقب أي عضو يكتب في قناة الفخ.'],
+        ['trust', '🕸️', 'القائمة السوداء المشتركة', 'يحظر تلقائياً أي شخص سبق أن حظره البوت.'], ['restore', '♻️', 'الاسترجاع التلقائي', 'يرجع الروم أو الرتبة المحذوفة من آخر نسخة احتياطية.']];
+      return card('🛡️', 'حمايات التخريب', 'شغّل أو أطفي كل حماية.', T.map(([k, ic, l, d]) => tog('sec.' + k, ic, l, d)).join('')) +
+        card('⚙️', 'إعدادات العقوبة', 'تنطبق على كل حمايات التخريب.', pick('logCh', 'قناة اللوج', 'تنبيهات الحماية مع أزرار الحظر والعزل.', chText(), '— اختر قناة —') + num('limit', 'العمليات المسموحة قبل العقوبة', 'كم عملية يسمح بها قبل أن يُعاقب الفاعل.', 1, 20, 3) +
+          num('window', 'خلال كم ثانية', 'المدة اللي تُحسب فيها العمليات.', 3, 120, 10) + sel('punish', 'العقوبة', 'ماذا يفعل البوت بالمخرب.', [['ban', 'حظر'], ['kick', 'طرد'], ['strip', 'سحب كل الرتب']]) + num('altDays', 'تنبيه الحسابات الأصغر من (أيام)', '', 1, 365, 3)) +
+        card('🌊', 'الغارات', 'إعدادات كشف الغارات.', num('raidJoins', 'عدد الداخلين خلال 10 ثواني = غارة', '', 3, 100, 8) + num('raidMin', 'مدة وضع الغارة (دقائق)', 'يُعاقب فيها كل داخل جديد.', 1, 120, 5) + sel('raidAct', 'عقوبة الداخلين وقت الغارة', '', [['kick', 'طرد'], ['ban', 'حظر']])) +
+        card('🧠', 'التحليل الاستباقي', 'يجمع نقاط خطر (عقوبات، غارات، فخاخ)، وإذا تجاوزت الحد خلال دقيقة يفعّل الطوارئ تلقائياً.', tog('autoPanic', '🚨', 'تفعيل الطوارئ التلقائي', 'يقفل السيرفر تلقائياً عند تراكم الخطر.', false) + num('panicScore', 'حد نقاط الخطر', 'كلما قلّ الرقم صار الإقفال أسرع.', 3, 100, 12)) +
+        card('🍯', 'قناة الفخ', 'قناة طعم؛ أي عضو يكتب فيها يُعاقب تلقائياً.', pick('honeypot', 'القناة', 'اختر قناة موجودة أو أنشئ جديدة.', chText(), '— بدون —') + `<div class="wrap">${btn('hpNew', 'إنشاء قناة فخ جديدة', 'g')}</div>`) +
+        card('✅', 'بوابة التحقق', 'زر وسؤال بسيط يتأكد به البوت أن العضو إنسان ثم يعطيه رتبة.', pick('verify.ch', 'قناة نشر اللوحة', '', chText(), '— اختر قناة —') + pick('verify.role', 'الرتبة بعد التحقق', '', roles()) + `<div class="wrap">${btn('vfPost', 'نشر لوحة التحقق', 'g')}</div>`) +
+        card('✅', 'القائمة البيضاء (Whitelist)', 'حسابات وبوتات موثوقة مستثناة من الحمايات. أدخل الـ ID.', `<div>${(ST.wl || []).map((id, i) => `<span class="tag">${esc(id)} <b data-act="wlDel" data-i="${i}">✕</b></span>`).join('') || '<small>لا أحد</small>'}</div><div class="ip"><input id="wlIn" placeholder="User ID">${btn('wlAdd', 'إضافة')}</div>`) +
+        card('🕸️', 'القائمة السوداء المشتركة', 'كل من يحظره البوت يُضاف هنا ويُحظر تلقائياً عند دخوله أي سيرفر يشغّله نفس البوت.', `<div>${(ST.bad || []).map((u) => `<span class="tag" title="${esc(u.r)}">${u.id} <b data-act="badDel" data-id="${u.id}">✕</b></span>`).join('') || '<small>فارغة</small>'}</div><div class="ip"><input id="badId" placeholder="User ID">${btn('badAdd', 'إضافة')}</div>`) +
+        card('💾', 'نسخ احتياطي تلقائي', '', num('autoBackup', 'كل كم ساعة (0 = إيقاف)', 'الفاصل بين كل نسخة تلقائية وأخرى.', 0, 168, 0)) + SAVE;
+    },
+  },
+  bk: {
+    render() {
+      return card('💾', 'النسخ الاحتياطي', 'يحفظ الرتب والرومات وصلاحياتها ويعطيك رابط عرض للنسخة.', `<div class="wrap">${btn('bkNew', '💾 نسخة احتياطية الآن')}</div><div id="lnk"></div>` +
+        ((ST.backups || []).map((b) => `<div class="row"><div class="rl"><b>${fmtD(b.date)}</b><small>${b.roles} رتبة / ${b.channels} قناة</small></div><div class="rc"><a href="/view/${b.id}" target="_blank"><button class="g s">عرض</button></a>${btn('bkRs', 'استعادة', 'g s', `data-id="${b.id}"`)}${btn('bkDel', 'حذف', 'd s', `data-id="${b.id}"`)}</div></div>`).join('') || '<small>لا نسخ بعد</small>'));
+    },
+  },
+  bin: {
+    render() {
+      const L = ST.bin || [];
+      return card('♻️', 'سلة الاستعادة', 'آخر 50 روم أو رتبة انحذفت. "استعادة" ينشئها من جديد بنفس الإعدادات.', (L.length ? `<div class="wrap">${btn('binClear', 'تفريغ السلة', 'd s')}</div>` : '') +
+        (L.map((e) => `<div class="row"><div class="rl"><b>${e.kind === 'ch' ? '📁' : '🎭'} ${esc(e.name)}</b><small>${fmtD(e.at)}</small></div><div class="rc">${btn('binRs', 'استعادة', 's', `data-id="${e.id}"`)}${btn('binDel', 'حذف نهائي', 'd s', `data-id="${e.id}"`)}</div></div>`).join('') || '<small>السلة فاضية</small>'));
+    },
+  },
+  top: {
+    async load() { this.rows = (await api('/api/leaderboard')) || []; },
+    render() {
+      return card('🥇', 'أعلى 25 عضو', 'مرتبين حسب النقاط.', this.rows.map((u, i) => `<div class="row"><div class="rc"><b>#${i + 1}</b>${u.avatar ? `<img src="${esc(u.avatar)}" width="34" height="34" style="border-radius:50%" alt="">` : ''}<div class="rl"><b>${esc(u.name)}</b><small>${u.id}</small></div></div><div class="rl" style="text-align:left"><b>فل ${u.level}</b><small>${u.xp} XP</small></div></div>`).join('') || '<small>لا أحد بعد</small>');
+    },
+  },
+  acts: {
+    render() {
+      const B = (u) => (u ? `<button class="d s" data-md="ban" data-uid="${u}">حظر</button> <button class="g s" data-md="strip" data-uid="${u}">عزل</button>` : '');
+      return card('🗂️', 'سجل الإجراءات', 'آخر 100 إجراء على الأعضاء.', (ST.acts || []).slice(0, 100).map((a) => `<div class="item"><b>${esc(a.type)}</b> — ${esc(a.uid || '')}<small>${esc(a.text)} • ${fmtD(a.t)}</small>${B(a.uid)}</div>`).join('') || '<small>لا إجراءات بعد</small>') +
+        card('🚨', 'تنبيهات الحماية الأخيرة', 'آخر تنبيهات الحماية منذ تشغيل البوت.', (ST.logs || []).map((l) => `<div class="item"><b>${esc(l.t)}</b><small>${esc(l.d)} • ${fmtD(l.at)}</small>${B(l.u)}</div>`).join('') || '<small>لا تنبيهات</small>');
+    },
+  },
+  dlog: {
+    render() { return card('🧾', 'سجل لوحة التحكم', 'من غيّر ماذا ومتى (آخر 100).', (ST.dlog || []).map((d) => `<div class="item"><b>${esc(d.who)}</b> — ${esc(d.text)}<small>${fmtD(d.t)}</small></div>`).join('') || '<small>لا تغييرات بعد</small>'); },
+  },
+  bot: {
+    render() {
+      const pr = ST.presence || {};
+      return card('🎮', 'حالة البوت (للمالك)', 'يغيّر حالة البوت ونشاطه الظاهر في ديسكورد.', (ST.isOwner ? '' : '<p class="mu">لتفعيلها: ضع OWNER_ID (ايدي حسابك) في ملف .env وسجّل الدخول به.</p>') +
+        fld('الحالة', '', `<select id="prS">${[['online', 'متصل'], ['idle', 'خامل'], ['dnd', 'مشغول'], ['invisible', 'مخفي']].map(([v, n]) => `<option value="${v}" ${pr.status === v ? 'selected' : ''}>${n}</option>`).join('')}</select>`) +
+        fld('النشاط', '', `<select id="prT">${[[0, 'يلعب'], [2, 'يستمع'], [3, 'يشاهد'], [5, 'ينافس']].map(([v, n]) => `<option value="${v}" ${+pr.type === v ? 'selected' : ''}>${n}</option>`).join('')}</select>`) +
+        fld('النص', '', `<input id="prX" value="${esc(pr.text || '')}">`) + `<div class="wrap">${btn('prApply', 'تطبيق')}</div>`) +
+        card('📦', 'تصدير / استيراد الإعدادات', 'انسخ إعداداتك أو انقلها لسيرفر ثاني.', '<textarea id="io" style="min-height:160px"></textarea>' + `<div class="wrap">${btn('exp', 'تصدير', 'g')}${btn('imp', 'استيراد وحفظ', 'g')}${btn('rst', 'إعادة ضبط كل شي', 'd')}</div>`);
+    },
+  },
+};
+
+/* ============ live previews ============ */
+function emPv() {
+  const e = $('#emPv'); if (!e) return;
+  e.style.borderColor = $('#emC').value;
+  e.textContent = ($('#emT').value ? $('#emT').value + '\n\n' : '') + $('#emD').value + ($('#emF').value ? '\n— ' + $('#emF').value : '');
+}
+function wPv() { const e = $('#wpv'); if (e) e.textContent = (S.welcome.msg || '').replace(/{user}/g, '@عضو').replace(/{server}/g, ST.guild || 'سيرفرك').replace(/{count}/g, ST.members || '1000'); }
+
+/* ============ log-event editor (modal) ============ */
+function openLg(k) {
+  const e = S.lg[k] || {}, m = $('#modal');
+  m.style.display = 'grid';
+  m.innerHTML = `<div class="card"><div class="ch"><h3>✏️ تعديل شكل الرسالة</h3></div><p class="mu">اترك الحقول فاضية لاستخدام الشكل الافتراضي. استخدم {details} لإدخال تفاصيل الحدث.</p>
+    ${fld('العنوان', '', `<input id="lgT" value="${esc(e.t || '')}">`)}${fld('النص', '{details} = تفاصيل الحدث.', `<textarea id="lgD">${esc(e.d || '')}</textarea>`)}${fld('اللون', '', `<input id="lgC" type="color" value="${e.c || '#7f8c8d'}">`)}
+    <div class="wrap">${btn('lgSave', 'حفظ', '', `data-k="${k}"`)}${btn('lgReset', 'الافتراضي', 'g', `data-k="${k}"`)}${btn('lgClose', 'إغلاق', 'g')}</div></div>`;
+}
+const closeM = () => ($('#modal').style.display = 'none');
+
+/* ============ actions ============ */
+const A = {
+  save: () => save(),
+  panic: async () => { if (!S.panic && !confirm('تفعيل وضع الطوارئ وقفل السيرفر؟')) return; const r = await api('/api/panic', { on: !S.panic }); if (r && r.ok) { S.panic = !S.panic; toast((S.panic ? '🔒 تم القفل' : '🔓 تم الفتح') + (r.bad ? ` — فشل ${r.bad} روم (صلاحيات البوت)` : '')); go('home'); } else ok(r); },
+  nick: async () => ok(await api('/api/botnick', { nick: $('#nick').value })),
+  embSend: async () => ok(await api('/api/embed', { channel: $('#emCh').value, title: $('#emT').value, desc: $('#emD').value, color: $('#emC').value, image: $('#emI').value, thumb: $('#emTh').value, footer: $('#emF').value }), '✅ أُرسلت'),
+  arAdd: () => { const t = $('#arT').value.trim(), r = $('#arR').value.trim(); if (!t || !r) return toast('اكتب الكلمة والرد'); S.ar.push({ t, r, exact: $('#arE').checked }); save(); go('ar'); },
+  arDel: (el) => { S.ar.splice(+el.dataset.i, 1); save(); go('ar'); },
+  rwAdd: () => { const l = +$('#rwL').value, r = $('#rwR').value; if (l > 0 && r) { S.lvl.rewards.push({ lvl: l, role: r }); save(); go('lvl'); } },
+  rwDel: (el) => { S.lvl.rewards.splice(+el.dataset.i, 1); save(); go('lvl'); },
+  xpReset: async () => { if (confirm('تصفير كل النقاط؟')) ok(await api('/api/xp/reset', {})); },
+  xpSet: async () => ok(await api('/api/xp/set', { id: $('#xpId').value.trim(), xp: +$('#xpVal').value })),
+  rrPost: async () => ok(await api('/api/rrpanel', { channel: $('#rrCh').value, title: $('#rrT').value, roles: $$('.rrc:checked').map((x) => x.value) }), '✅ نُشرت اللوحة'),
+  tkPost: async () => { if (!S.tk.ch) return toast('اختر القناة أولاً'); await save(); ok(await api('/api/ticketpanel', { channel: S.tk.ch }), '✅ نُشرت اللوحة'); },
+  vfPost: async () => { if (!S.verify.ch) return toast('اختر القناة أولاً'); await save(); ok(await api('/api/verifypanel', { channel: S.verify.ch }), '✅ نُشرت اللوحة'); },
+  hpNew: async () => { if (!confirm('سيتم إنشاء قناة فخ ظاهرة للجميع، وأي عضو يكتب فيها يُعاقب. متأكد؟')) return; const r = await api('/api/honeypot/create', {}); if (r && r.ok) { S.honeypot = r.id; await refresh(); save('✅ تم إنشاء قناة الفخ'); go('raid'); } else ok(r); },
+  wlAdd: async () => { const v = $('#wlIn').value.trim(); if (!/^\d{15,22}$/.test(v)) return toast('ID غير صحيح'); ST.wl = [...new Set([...(ST.wl || []), v])]; S.wl = ST.wl; await save(); go('raid'); },
+  wlDel: async (el) => { ST.wl.splice(+el.dataset.i, 1); S.wl = ST.wl; await save(); go('raid'); },
+  badAdd: async () => { const id = $('#badId').value.trim(); if (!/^\d{15,22}$/.test(id)) return toast('ID غير صحيح'); await api('/api/bad/add', { id }); await refresh(); go('raid'); },
+  badDel: async (el) => { await api('/api/bad/remove', { id: el.dataset.id }); await refresh(); go('raid'); },
+  mdW: async () => { const w = await api('/api/warns?id=' + $('#mdId').value.trim()); $('#mdWL').innerHTML = w && w.length ? w.map((x) => `• ${esc(x.r)} — ${fmtD(x.at)}`).join('<br>') : 'لا تحذيرات'; },
+  bkNew: async () => { const r = await api('/api/backup', {}); if (r && r.link) { await refresh(); await go('bk'); $('#lnk').innerHTML = `<p class="mu" style="margin-top:10px">رابط عرض النسخة (يعمل لتسجيل دخول واحد فقط):</p><input readonly value="${esc(r.link)}" onclick="this.select()">`; } else ok(r); },
+  bkRs: async (el) => { if (confirm('استعادة العناصر المفقودة من هذه النسخة؟')) { const r = await api('/api/backup/restore', { id: el.dataset.id }); toast(r && r.ok ? `♻️ تمت استعادة ${r.n} عنصر` : 'فشلت الاستعادة'); } },
+  bkDel: async (el) => { if (confirm('حذف هذه النسخة؟')) { await api('/api/backup/delete', { id: el.dataset.id }); await refresh(); go('bk'); } },
+  binRs: async (el) => { const r = await api('/api/bin/restore', { id: el.dataset.id }); ok(r, '♻️ تمت الاستعادة'); await refresh(); go('bin'); },
+  binDel: async (el) => { await api('/api/bin/delete', { id: el.dataset.id }); await refresh(); go('bin'); },
+  binClear: async () => { if (confirm('تفريغ السلة نهائياً؟')) { await api('/api/bin/clear', {}); await refresh(); go('bin'); } },
+  stAdd: () => { const ch = $('#stCh').value, tpl = $('#stT').value.trim(); if (!ch || !tpl) return toast('اختر روم واكتب الصيغة'); S.stats.push({ ch, tpl }); save(); go('stats'); },
+  stDel: (el) => { S.stats.splice(+el.dataset.i, 1); save(); go('stats'); },
+  stNew: async () => { const tpl = $('#stT').value.trim() || '👥 الأعضاء: {members}'; const r = await api('/api/stats/create', { tpl }); if (r && r.ok) { S.stats.push({ ch: r.id, tpl }); await save(); await refresh(); go('stats'); } else ok(r); },
+  stUp: async () => { await save(); const r = await api('/api/stats/update', {}); toast(r && r.ok ? `✅ حُدّث ${r.n} روم` : 'فشل'); },
+  prApply: async () => ok(await api('/api/presence', { status: $('#prS').value, type: $('#prT').value, text: $('#prX').value })),
+  exp: () => { const { panic, wl, ...c } = S; $('#io').value = JSON.stringify(c, null, 1); },
+  imp: () => { try { merge(S, JSON.parse($('#io').value)); save('✅ تم الاستيراد'); go('bot'); } catch { toast('JSON غير صحيح'); } },
+  rst: async () => { if (confirm('إعادة ضبط كل الإعدادات؟')) { await api('/api/reset', {}); location.reload(); } },
+  lgEdit: (el) => openLg(el.dataset.k),
+  lgSave: (el) => { const k = el.dataset.k; (S.lg[k] ??= {}); Object.assign(S.lg[k], { t: $('#lgT').value, d: $('#lgD').value, c: $('#lgC').value }); closeM(); autosave(); },
+  lgReset: (el) => { const e = S.lg[el.dataset.k]; if (e) { delete e.t; delete e.d; delete e.c; } closeM(); autosave(); },
+  lgClose: closeM,
+};
+
+/* ============ event delegation ============ */
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('[data-go],[data-act],[data-md],[data-ch]');
+  if (!t) return;
+  if (t.dataset.go) return go(t.dataset.go);
+  if (t.dataset.act) return A[t.dataset.act]?.(t);
+  if (t.dataset.md) { // member actions (mod page or action buttons)
+    const id = t.dataset.uid || $('#mdId')?.value.trim();
+    if (!/^\d{15,22}$/.test(id || '')) return toast('ID غير صحيح');
+    if (!confirm('تأكيد؟')) return;
+    ok(await api('/api/mod', { action: t.dataset.md, id, reason: $('#mdR')?.value || '', min: +($('#mdM')?.value || 60), role: $('#mdRole')?.value, nick: $('#mdN')?.value || '' }));
+  }
+  if (t.dataset.ch) ok(await api('/api/chan', { action: t.dataset.ch, channel: $('#chSel').value, value: $('#chV').value, title: $('#chTi').value, text: $('#chT').value }));
+});
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset.p) { set(S, t.dataset.p, t.checked); save(); drawTop(); drawNav(); if (cur === 'home') go('home'); return; }
+  if (t.dataset.n) { set(S, t.dataset.n, +t.value); return autosave(); }
+  if (t.dataset.v) { set(S, t.dataset.v, t.value); wPv(); drawNav(); return autosave(); }
+  if (t.dataset.ign) { const a = S.lvl.ignore, i = a.indexOf(t.dataset.ign); t.checked ? i < 0 && a.push(t.dataset.ign) : i >= 0 && a.splice(i, 1); return autosave(); }
+  if (t.dataset.lg) { (S.lg[t.dataset.lg] ??= {}).on = t.checked; autosave(); drawNav(); return go('logs'); }
+  if (t.dataset.lgch) { (S.lg[t.dataset.lgch] ??= {}).ch = t.value; return autosave(); }
+  if (t.dataset.lgcat) { const c = LOGS.find((x) => x[1] === t.dataset.lgcat); c[2].forEach(([k]) => ((S.lg[k] ??= {}).on = t.checked)); autosave(); drawNav(); return go('logs'); }
+});
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.dataset.v && t.tagName !== 'SELECT') { set(S, t.dataset.v, t.value); wPv(); autosave(); }
+  if (t.dataset.pv !== undefined) emPv();
+});
+
+/* ============ boot ============ */
+(async () => {
+  const st = await api('/api/state');
+  if (!st || st.error) { location.href = '/servers'; return; }
+  ST = st; S = merge(JSON.parse(JSON.stringify(DEF)), { ...st.ui, wl: st.wl, panic: st.panic });
+  $('#gname').textContent = st.guild;
+  if (st.isOwner) $('#ownLink').style.display = 'block';
+  const start = (location.hash.match(/#\/(\w+)/) || [])[1];
+  go(P[start] ? start : 'home');
+})();
+</script>
+</body>
+</html>

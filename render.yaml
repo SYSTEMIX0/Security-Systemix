@@ -1,0 +1,28 @@
+# Render Blueprint — يشغّل البوت + لوحة التحكم كخدمة Web واحدة.
+# مهم: القرص الدائم (disk) يحتاج خطة مدفوعة؛ بدونه تضيع الإعدادات والاشتراكات عند كل نشر/إعادة تشغيل.
+services:
+  - type: web
+    name: systemix
+    runtime: node
+    plan: starter
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATA_DIR
+        value: /var/data
+      - key: TOKEN
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_SECRET
+        sync: false
+      - key: OWNER_ID
+        sync: false
+    disk:
+      name: systemix-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Systemix | عرض النسخة</title><link rel="icon" href="/logo.webp">
+<style>*{box-sizing:border-box;margin:0;font-family:Tahoma,sans-serif}body{background:radial-gradient(800px 400px at 80% -10%,#3b0f73aa,transparent),#07040d;color:#f1e9ff;padding:22px;max-width:1000px;margin:auto}
+header{display:flex;align-items:center;gap:12px;margin-bottom:18px}header img{width:48px}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.c{background:#120a1f;border:1px solid #2a1646;border-radius:16px;padding:16px}h3{margin-bottom:10px;color:#b46bff}.r{padding:7px 0;border-bottom:1px solid #2a1646;font-size:14px;display:flex;gap:8px;align-items:center}
+.d{width:12px;height:12px;border-radius:50%;flex:none}.m{color:#a592c4;font-size:12px}.cat{margin-top:10px;font-weight:700;color:#d9c2ff}.tg{background:#ff4d6d33;color:#ff8da1;border-radius:8px;padding:1px 6px;font-size:11px}</style></head>
+<body><header><img src="/logo.webp"><div><h2 id="t">جاري التحميل...</h2><div class="m" id="s"></div></div></header><div class="g"><div class="c"><h3>🎭 الرتب</h3><div id="roles"></div></div><div class="c"><h3>💬 الرومات</h3><div id="chs"></div></div></div>
+<script>const e=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+fetch('/api/backup/'+location.pathname.split('/').pop()).then(r=>r.json()).then(b=>{if(b.error){document.body.innerHTML='<p style="padding:40px;text-align:center">غير مصرّح، افتح رابط الدخول من البوت</p>';return}
+t.textContent='نسخة '+new Date(b.date).toLocaleString('ar-SA');s.textContent=b.roles.length+' رتبة • '+b.channels.length+' روم';
+roles.innerHTML=b.roles.map(r=>`<div class="r"><span class="d" style="background:${r.color?'#'+r.color.toString(16).padStart(6,'0'):'#99aab5'}"></span>${e(r.name)}${r.admin?' <span class="tg">Admin</span>':''}</div>`).join('')||'<span class="m">لا رتب</span>';
+const ic=x=>x.type==2?'🔊':'#';const cats=b.channels.filter(x=>x.type==4);const row=x=>`<div class="r">${ic(x)} ${e(x.name)}${x.topic?`<span class="m">— ${e(x.topic)}</span>`:''}</div>`;
+let o=b.channels.filter(x=>x.type!=4&&!x.parent).map(row).join('');cats.forEach(k=>{o+=`<div class="cat">📁 ${e(k.name)}</div>`+b.channels.filter(x=>x.type!=4&&x.parent===k.name).map(row).join('')});chs.innerHTML=o||'<span class="m">لا رومات</span>'});</script></body></html>

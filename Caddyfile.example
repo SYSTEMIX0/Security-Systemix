@@ -1,0 +1,5 @@
+# HTTPS تلقائي مجاني. بدّل الدومين بدومينك (مثلاً name.duckdns.org)
+your-domain.example {
+    encode gzip
+    reverse_proxy localhost:3000
+}
